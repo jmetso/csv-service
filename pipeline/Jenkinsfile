@@ -25,7 +25,7 @@ node('maven') {
         //openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
     }
     stage ('Tag image to test ready') {
-        input 'Tag TestReady?
+        input 'Tag TestReady?'
         openshiftTag alias: 'false', apiURL: '', authToken: '', destStream: 'csv-s2i-build', destTag: 'testReady', destinationAuthToken: '', destinationNamespace: 'csv-service-dev', namespace: 'csv-service-dev', srcStream: 'csv-s2i-build', srcTag: 'latest', verbose: 'false'
     }
     stage ('Deploy to Test') {
