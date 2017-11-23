@@ -1,6 +1,6 @@
 node('maven') {
     stage ('Checkout') {
-        git 'https://github.com/kborup-redhat/csv-service.git'
+        git 'https://github.com/jmetso/csv-service.git'
     }
     stage ('Prepare') {
         sh 'rm -rf oc-build && mkdir -p oc-build/deployments'
