@@ -4,7 +4,7 @@ node('maven') {
     }
     stage ('Prepare') {
         sh 'rm -rf oc-build && mkdir -p oc-build/deployments'
-        sh 'oc delete bc,dc,svc -l app=csv-service -n csv-service-dev'
+        sh 'oc delete bc,dc,svc,route -l app=csv-service -n csv-service-dev'
         //sh 'oc delete bc,dc,svc,route -l app=csv-service -n csv-service-dev'
     }
     stage ('Maven build') {
@@ -21,15 +21,18 @@ node('maven') {
     }
     stage ('Deploy DEV') {
         sh 'oc new-app -i csv-s2i-build --name=csv-service -l app=csv-service'
+        sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-dev'
         //openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
     }
     stage ('Tag image to test ready') {
+        input 'Tag TestReady?
         openshiftTag alias: 'false', apiURL: '', authToken: '', destStream: 'csv-s2i-build', destTag: 'testReady', destinationAuthToken: '', destinationNamespace: 'csv-service-dev', namespace: 'csv-service-dev', srcStream: 'csv-s2i-build', srcTag: 'latest', verbose: 'false'
     }
     stage ('Deploy to Test') {
-        sh 'oc delete dc,svc -l app=csv-service -n csv-service-test'
+        sh 'oc delete dc,svc,route -l app=csv-service -n csv-service-test'
         sh 'oc new-app -i csv-service-dev/csv-s2i-build:testReady --name=csv-service -l app=csv-service -n csv-service-test'
         openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-test', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
+        sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-test'
     }
     stage ('Run tests') {
         // do tests
