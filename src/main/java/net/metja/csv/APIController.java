@@ -26,15 +26,11 @@ import java.util.Map;
  */
 @RestController
 
-public class EnvMap {
-  public static void main(String[] args) {
-    ocpenv ocpenv = ocpmap(System.getenv("OCP_ENV_PROJECT"));
-  }
-}
-
-
 
 public class APIController {
+
+    @Value("${OPENSHIFT_ENV_VAR:test}")
+    public String OCPenv;
 
     public static final String DATA_FOLDER_KEY = "DATA_FOLDER";
     private Logger logger = LoggerFactory.getLogger(APIController.class);
@@ -171,7 +167,7 @@ public class APIController {
 
     @RequestMapping(value="/csv/v1", produces = MediaType.TEXT_HTML_VALUE, method = RequestMethod.GET)
     public ResponseEntity<String> index() {
-        return new ResponseEntity<String>("<html><head><style>h1 { text-align: center } body { background-color: #fff } </style><title>CSV Service</title></head><body><h1>Hello World!</h1></body></html>", HttpStatus.OK);
+        return new ResponseEntity<String>("<html><head><style>h1 { text-align: center } body { background-color: #fff } </style><title>CSV Service</title></head><body><h1>" + OCPenv  + "</h1></body></html>", HttpStatus.OK);
     }
 
     @Autowired
