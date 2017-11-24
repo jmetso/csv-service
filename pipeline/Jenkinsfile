@@ -20,8 +20,7 @@ node('maven') {
         openshiftVerifyBuild apiURL: '', authToken: '', bldCfg: 'csv-s2i-build', checkForTriggeredDeployments: 'false', namespace: 'csv-service-dev', verbose: 'false', waitTime: ''
     }
     stage ('Deploy DEV') {
-        sh 'oc new-app -i csv-s2i-build --name=csv-service -l app=csv-service'
-        sh 'oc env dc csv-service OPENSHIFT_ENV_VAR="Development" -n csv-service-dev'
+        sh 'oc new-app -i csv-s2i-build --name=csv-service -l app=csv-service -p OPENSHIFT_ENV_VAR="Development"'
         sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-dev'
         //openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
     }
@@ -31,8 +30,7 @@ node('maven') {
     }
     stage ('Deploy to Test') {
         sh 'oc delete dc,svc,route -l app=csv-service -n csv-service-test'
-        sh 'oc new-app -i csv-service-dev/csv-s2i-build:testReady --name=csv-service -l app=csv-service -n csv-service-test'
-	sh 'oc env dc csv-service OPENSHIFT_ENV_VAR="Test" -n csv-service-test'
+        sh 'oc new-app -i csv-service-dev/csv-s2i-build:testReady --name=csv-service -l app=csv-service -n csv-service-test -p OPENSHIFT_ENV_VAR="Test Now"'
         openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-test', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
         sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-test'
     }
@@ -47,8 +45,7 @@ node('maven') {
     }
     stage ('Deploy to Prod') {
         sh 'oc delete dc,svc,route -l app=csv-service -n csv-service-prod'
-        sh 'oc new-app -i csv-service-test/csv-service:prodReady --name=csv-service -l app=csv-service -n csv-service-prod'
-        sh 'oc env dc csv-service OPENSHIFT_ENV_VAR="Prod" -n csv-service-prod'
+        sh 'oc new-app -i csv-service-test/csv-service:prodReady --name=csv-service -l app=csv-service -n csv-service-prod -p OPENSHIFT_ENV_VAR="Production Now"'
         openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-prod', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
         sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-prod'
     }
