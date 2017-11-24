@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class APIController {
 
-    @Value("${OPENSHIFT_ENV_VAR:test}")
+    @Value("${OPENSHIFT_ENV_VAR:Welcome}")
     public String OCPenv;
 
     public static final String DATA_FOLDER_KEY = "DATA_FOLDER";
