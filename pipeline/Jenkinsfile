@@ -21,7 +21,7 @@ node('maven') {
     }
     stage ('Deploy DEV') {
         sh 'oc new-app -i csv-s2i-build --name=csv-service -l app=csv-service -p OPENSHIFT_ENV_VAR=Development'
-        sh 'oc env dc csv-service OPENSHIFT_ENV_VAR=Development" -n csv-service-dev'
+        sh 'oc env dc csv-service OPENSHIFT_ENV_VAR=Development -n csv-service-dev'
         sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-dev'
         //openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
     }
