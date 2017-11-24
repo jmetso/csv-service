@@ -25,9 +25,10 @@ import java.util.Map;
  * Created by Janne Metso on 7/13/17.
  */
 @RestController
+
 public class EnvMap {
   public static void main(String[] args) {
-    ocpenv ocpenv = ocpmap(System.getenv('OCP_ENV_PROJECT'));
+    ocpenv ocpenv = ocpmap(System.getenv("OCP_ENV_PROJECT"));
   }
 }
 
