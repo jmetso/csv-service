@@ -25,6 +25,25 @@ import java.util.Map;
  * Created by Janne Metso on 7/13/17.
  */
 @RestController
+public class EnvMap {
+    public static void main (String[] args) {
+        Map<String, String> env = System.getenv();
+        for (String envName : env.keySet()) {
+            System.out.format("%s=%s%n",
+                              envName,
+                              env.get(envName));
+        }
+    }
+}
+
+public class EnvMap {
+  public static void main(String[] args) {
+    ocpenv ocpenv = ocpmap(System.getenv('OCP_ENV_PROJECT'));
+  }
+}
+
+
+
 public class APIController {
 
     public static final String DATA_FOLDER_KEY = "DATA_FOLDER";
