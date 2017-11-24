@@ -32,7 +32,7 @@ node('maven') {
     stage ('Deploy to Test') {
         sh 'oc delete dc,svc,route -l app=csv-service -n csv-service-test'
         sh 'oc new-app -i csv-service-dev/csv-s2i-build:testReady --name=csv-service -l app=csv-service -n csv-service-test -p OPENSHIFT_ENV_VAR=Test'
-        sh 'oc env dc csv-service OPENSHIFT_ENV_VAR=Test -n csv-service-dev'
+        sh 'oc env dc csv-service OPENSHIFT_ENV_VAR=Test -n csv-service-test'
         openshiftVerifyDeployment apiURL: '', authToken: '', depCfg: 'csv-service', namespace: 'csv-service-test', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
         sh 'oc expose service csv-service --path="/csv/v1" -l app=csv-service -n csv-service-test'
     }
