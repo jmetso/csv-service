@@ -1,7 +1,0 @@
-if [ -z $WEB_TOKEN ]
-then
-  echo "No WEB_TOKEN env variable set, using the default one in index.html."
-else
-  echo "WEB_TOKEN env variable set, replacing the default token in index.html.conf."
-  sed -i "s/Hello World/$WEB_TOKEN/g" /src/main/resources/static/index.html
-fi
