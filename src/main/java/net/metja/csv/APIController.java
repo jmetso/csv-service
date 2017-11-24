@@ -28,7 +28,6 @@ import java.util.Map;
 public class APIController {
 
     public static final String DATA_FOLDER_KEY = "DATA_FOLDER";
-    public static openshift String OpenshiftENV = System.getenv("OPENSHIFT_PROJECT_ENV");
     private Logger logger = LoggerFactory.getLogger(APIController.class);
     private String dataFolder = null;
     private TunableHealthIndicator tunableHealthIndicator;
