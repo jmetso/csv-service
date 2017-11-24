@@ -19,3 +19,4 @@ New functions provided with OPENSHIFT_ENV_VAR which will give you access to put 
 Use with oc env dc csv-service OPENSHIFT_ENV_VAR=SomeTextHere
 
 Contributer Kim Borup Red Hat. 
+
