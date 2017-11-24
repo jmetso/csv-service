@@ -19,6 +19,7 @@ import javax.xml.ws.Response;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Janne Metso on 7/13/17.
@@ -27,6 +28,7 @@ import java.util.List;
 public class APIController {
 
     public static final String DATA_FOLDER_KEY = "DATA_FOLDER";
+    public static openshift String OpenshiftENV = System.getenv("OPENSHIFT_PROJECT_ENV");
     private Logger logger = LoggerFactory.getLogger(APIController.class);
     private String dataFolder = null;
     private TunableHealthIndicator tunableHealthIndicator;
